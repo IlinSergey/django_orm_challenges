@@ -14,19 +14,15 @@ from challenges.views.level_1.b_book_details import get_book
 
 
 def delete_book(book_id: int) -> None:
-    # код писать тут
-    pass
+    book = Book.objects.get(pk=book_id)
+    book.delete()
 
 
 def delete_book_handler(request: HttpRequest, book_id: int) -> HttpResponse:
     if request.method != "POST":
         return HttpResponseNotAllowed(["POST"])
-
     book = get_book(book_id)
-
     if book is None:
         return HttpResponseNotFound()
-
     delete_book(book_id)
-
     return HttpResponse()
