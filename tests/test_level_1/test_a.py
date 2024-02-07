@@ -18,7 +18,7 @@ def test__create_book_handler__success(client):
         }
 
 
-def test__create_book_handler__failure(client):
+def test__create_book_handler__missing_parameters(client):
     response = client.post('/book/create/', {'title': 'test', 'author_full_name': 'test'})
     assert response.status_code == 400
     assert response.content == b'One of required parameters are missing'
