@@ -7,7 +7,8 @@
 на 127.0.0.1:8000/book/<id книги>/update/.
 После обновления книги попробуйте получить описание книги и убедитесь, что вы видите новые значения.
 """
-from django.http import HttpRequest, HttpResponse, HttpResponseBadRequest, JsonResponse
+from django.http import (HttpRequest, HttpResponse, HttpResponseBadRequest,
+                         JsonResponse)
 
 from challenges.models import Book
 
