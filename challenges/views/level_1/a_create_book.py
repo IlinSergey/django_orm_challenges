@@ -7,14 +7,15 @@
 
 Делать post-запрос я рекомендую с помощью Postman (https://www.postman.com/downloads/).
 """
-from django.http import HttpRequest, HttpResponse, HttpResponseBadRequest, JsonResponse
+from django.http import (HttpRequest, HttpResponse, HttpResponseBadRequest,
+                         JsonResponse)
 
 from challenges.models import Book
 
 
 def create_book(title: str, author_full_name: str, isbn: str) -> Book:
-    # код писать тут
-    pass
+    book = Book.objects.create(title=title, author_full_name=author_full_name, isbn=isbn)
+    return book
 
 
 def create_book_handler(request: HttpRequest) -> HttpResponse:
