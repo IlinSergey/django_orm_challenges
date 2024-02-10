@@ -7,6 +7,7 @@ from challenges.views.level_1.b_book_details import get_book
 from challenges.views.level_1.d_update_book import update_book
 
 
+@pytest.mark.django_db
 def test__update_book_handler__success(client):
     with patch('challenges.views.level_1.d_update_book.update_book') as update_book_mock:
         update_book_mock.return_value = Book(id=1, title='new title', author_full_name='new name', isbn='new isbn')
@@ -44,8 +45,8 @@ def test__update_book_handler__missing_parameters(client):
 
 
 @pytest.mark.django_db
-def test__update_book():
-    book = Book.objects.create(title='test title', author_full_name='test name', isbn='test isbn')
+def test__update_book__success(create_book):
+    book = create_book
     result = get_book(book_id=1)
     assert result == book
     new_book = update_book(
