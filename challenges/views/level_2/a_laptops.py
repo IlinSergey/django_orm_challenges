@@ -11,7 +11,10 @@
 - реализовать у модели метод to_json, который будет преобразовывать объект ноутбука в json-сериализуемый словарь
 - по очереди реализовать каждую из вьюх в этом файле, проверяя правильность их работу в браузере
 """
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, JsonResponse
+from django.shortcuts import get_list_or_404, get_object_or_404
+
+from challenges.models import Laptop
 
 
 def laptop_details_view(request: HttpRequest, laptop_id: int) -> HttpResponse:
@@ -19,7 +22,9 @@ def laptop_details_view(request: HttpRequest, laptop_id: int) -> HttpResponse:
     В этой вьюхе вам нужно вернуть json-описание ноутбука по его id.
     Если такого id нет, вернуть 404.
     """
-    pass
+    laptop = get_object_or_404(Laptop, pk=laptop_id)
+    laptop = laptop.to_json()
+    return JsonResponse(laptop)
 
 
 def laptop_in_stock_list_view(request: HttpRequest) -> HttpResponse:
@@ -27,7 +32,9 @@ def laptop_in_stock_list_view(request: HttpRequest) -> HttpResponse:
     В этой вьюхе вам нужно вернуть json-описание всех ноутбуков, которых на складе больше нуля.
     Отсортируйте ноутбуки по дате добавления, сначала самый новый.
     """
-    pass
+    laptops = get_list_or_404(Laptop.objects.order_by('-created_at'), quantity__gt=0)
+    laptops_json_list = [laptop.to_json() for laptop in laptops]
+    return JsonResponse(laptops_json_list, safe=False)
 
 
 def laptop_filter_view(request: HttpRequest) -> HttpResponse:
@@ -37,6 +44,7 @@ def laptop_filter_view(request: HttpRequest) -> HttpResponse:
     Если бренд не входит в список доступных у вас на сайте или если цена отрицательная, верните 403.
     Отсортируйте ноутбуки по цене, сначала самый дешевый.
     """
+
     pass
 
 
