@@ -55,7 +55,10 @@ def laptop_filter_view(request: HttpRequest) -> HttpResponse:
     brand = request.GET.get('brand', None)
     min_price = request.GET.get('min_price', None)
     if brand is not None and min_price is not None:
-        min_price = float(min_price)
+        try:
+            min_price = float(min_price)
+        except ValueError:
+            return HttpResponse(status=403)
         check = brand_and_price_validator(brand, min_price)
         if check:
             laptops = get_list_or_404(Laptop.objects.order_by('price'), brand=brand, price__gte=min_price)
@@ -76,6 +79,8 @@ def last_laptop_details_view(request: HttpRequest) -> HttpResponse:
         return HttpResponseNotAllowed(["GET"])
     try:
         laptop = Laptop.objects.order_by('-created_at').first()
+        if laptop is None:
+            return HttpResponse(status=404)
         laptop = laptop.to_json()
         return JsonResponse(laptop)
     except Laptop.DoesNotExist:
