@@ -72,4 +72,11 @@ def last_laptop_details_view(request: HttpRequest) -> HttpResponse:
     В этой вьюхе вам нужно вернуть json-описание последнего созданного ноутбука.
     Если ноутбуков нет вообще, вернуть 404.
     """
-    pass
+    if request.method != "GET":
+        return HttpResponseNotAllowed(["GET"])
+    try:
+        laptop = Laptop.objects.order_by('-created_at').first()
+        laptop = laptop.to_json()
+        return JsonResponse(laptop)
+    except Laptop.DoesNotExist:
+        return HttpResponse(status=404)
