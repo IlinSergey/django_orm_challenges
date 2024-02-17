@@ -1,6 +1,6 @@
 import pytest
 
-from challenges.models import Laptop
+from challenges.models import Laptop, Post
 
 
 @pytest.fixture
@@ -23,3 +23,26 @@ def create_laptops():
 def create_last_laptop():
     yield Laptop.objects.create(brand='Asus', year=2025, ram=512, hdd=8192, price=7000, quantity=1)
     Laptop.objects.all().delete()
+
+
+@pytest.fixture
+def create_posts():
+    posts = [
+        Post.objects.create(title='test title 1', text='test text 1', author='test author 1',
+                            category='news', status='published'),
+        Post.objects.create(title='test title 2', text='test text 2', author='test author 2',
+                            category='travel', status='draft'),
+        Post.objects.create(title='test title 3', text='test text 3', author='test author 3',
+                            category='food', status='ban'),
+        Post.objects.create(title='test title 4', text='test text 4', author='test author 4',
+                            category='travel', status='published'),
+        Post.objects.create(title='test title 5', text='test text 5', author='test author 5',
+                            category='music', status='ban'),
+        Post.objects.create(title='test title 6', text='test text 6', author='test author 6',
+                            status='published'),
+        Post.objects.create(title='test title 7', text='test text 7', author='test author 7',
+                            status='draft'),
+
+    ]
+    yield posts
+    Post.objects.all().delete()

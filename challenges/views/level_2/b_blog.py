@@ -71,10 +71,7 @@ def categories_posts_list_view(request: HttpRequest) -> HttpResponse:
         return HttpResponseNotAllowed(["GET"])
     categories = request.GET.get('categories', None)
     if categories is not None:
-        try:
-            category_list = categories.split(',')
-        except ValueError:
-            return HttpResponse(status=403)
+        category_list = categories.split(',')
         posts = get_list_or_404(Post.objects.filter(category__in=category_list))
         posts_json_list = [post.to_json() for post in posts]
         return JsonResponse(posts_json_list, safe=False)
