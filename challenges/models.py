@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 
 class Book(models.Model):
@@ -51,3 +52,50 @@ class Laptop(models.Model):
         ]
         verbose_name = 'Ноутбук'
         verbose_name_plural = 'Ноутбуки'
+
+
+"""
+В этом задании вам предстоит работать с моделью поста в блоге. У него есть название, текст,
+имя автора, статус (опубликован/не опубликован/забанен), дата создания, дата публикации,
+категория (одна из нескольких вариантов).
+"""
+
+
+class Post(models.Model):
+
+    STATUS_CHOICES = [
+        ('published', 'Опубликован'),
+        ('draft', 'Не опубликован'),
+        ('ban', 'Забанен'),
+    ]
+    CATEGORY_CHOICES = [
+        ('news', 'Новости'),
+        ('travel', 'Путешествия'),
+        ('food', 'Еда'),
+        ('music', 'Музыка'),
+        ('sport', 'Спорт'),
+    ]
+    title = models.CharField(max_length=256)
+    text = models.CharField(max_length=5000)
+    author = models.CharField(max_length=30)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
+    category = models.CharField(max_length=10, choices=CATEGORY_CHOICES)
+    created_at = models.DateTimeField(auto_now_add=True)
+    published_at = models.DateTimeField(null=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
+
+    def save(self, *args, **kwargs):
+        if self.status == 'published':
+            self.published_at = timezone.now()
+        super().save(*args, **kwargs)
+
+    class Meta:
+        ordering = ['-published_at']
+        indexes = [
+            models.Index(fields=['published_at']),
+        ]
+        verbose_name = 'Пост'
+        verbose_name_plural = 'Посты'
