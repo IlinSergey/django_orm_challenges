@@ -14,6 +14,7 @@ class TestLaptopDetailView():
         response = client.get(f'/laptops/{_id}/')
         assert response.status_code == 200
         assert response.json() == {
+            'id': _id,
             'brand': brand,
             'year': year,
             'ram': ram,
@@ -91,6 +92,7 @@ class TestLastLaptopDetailView():
         response = client.get('/laptops/last/')
         assert response.status_code == 200
         assert response.json() == {
+            'id': 9,
             'brand': 'Asus',
             'year': 2025,
             'ram': 512,

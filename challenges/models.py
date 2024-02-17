@@ -37,6 +37,7 @@ class Laptop(models.Model):
         brand, year, ram, hdd, price, and quantity.
         """
         return {
+            'id': self.pk,
             'brand': self.brand,
             'year': self.year,
             'ram': self.ram,
