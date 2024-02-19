@@ -2,7 +2,6 @@ from unittest.mock import patch
 
 import pytest
 
-from challenges.models import Book
 from challenges.views.level_1.b_book_details import get_book
 
 

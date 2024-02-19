@@ -1,3 +1,4 @@
+from django.contrib import admin
 from django.urls import path
 
 from challenges.views.level_1.a_create_book import create_book_handler
@@ -15,6 +16,7 @@ from challenges.views.level_2.b_blog import (categories_posts_list_view,
                                              untagged_posts_list_view)
 
 urlpatterns = [
+    path('admin/', admin.site.urls),
     # level 1
     path('book/create/', create_book_handler),
     path('book/<int:book_id>/', book_details_handler),
