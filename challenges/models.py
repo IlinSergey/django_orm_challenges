@@ -1,4 +1,5 @@
 from django.db import models
+from django.forms import model_to_dict
 from django.utils import timezone
 
 
@@ -36,15 +37,8 @@ class Laptop(models.Model):
         Returns a JSON representation of the object with the following attributes:
         brand, year, ram, hdd, price, and quantity.
         """
-        return {
-            'id': self.pk,
-            'brand': self.brand,
-            'year': self.year,
-            'ram': self.ram,
-            'hdd': self.hdd,
-            'price': self.price,
-            'quantity': self.quantity,
-        }
+        json_data = model_to_dict(self)
+        return json_data
 
     class Meta:
         ordering = ['brand']
@@ -98,14 +92,8 @@ class Post(models.Model):
         Returns a JSON representation of the object with the following attributes:
         title, text, author, status, category.
         """
-        return {
-            'id': self.pk,
-            'title': self.title,
-            'text': self.text,
-            'author': self.author,
-            'status': self.status,
-            'category': self.category,
-        }
+        json_data = model_to_dict(self)
+        return json_data
 
     class Meta:
         ordering = ['-created_at']
